@@ -103,6 +103,7 @@ type cfg = {
      memoize_lazy : bool;
      normalize_pure_lets: bool;
      reifying : bool;
+     memo_ctr : int;
 }
 
 (* Profiling primitive operators *)

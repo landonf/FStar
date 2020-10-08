@@ -258,6 +258,7 @@ type cfg = {
      memoize_lazy : bool;
      normalize_pure_lets: bool;
      reifying : bool;
+     memo_ctr : int;
 }
 
 let cfg_to_string cfg =
@@ -1059,7 +1060,9 @@ let config' psteps s e =
      strong = false;
      memoize_lazy = true;
      normalize_pure_lets = (not steps.pure_subterms_within_computations) || Options.normalize_pure_terms_for_extraction();
-     reifying = false}
+     reifying = false;
+     memo_ctr = 0;
+    }
 
 let config s e = config' [] s e
 
