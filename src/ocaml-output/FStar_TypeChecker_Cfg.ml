@@ -1590,53 +1590,63 @@ type cfg =
   strong: Prims.bool ;
   memoize_lazy: Prims.bool ;
   normalize_pure_lets: Prims.bool ;
-  reifying: Prims.bool }
+  reifying: Prims.bool ;
+  memo_ctr: Prims.int }
 let (__proj__Mkcfg__item__steps : cfg -> fsteps) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> steps
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} -> steps
 let (__proj__Mkcfg__item__tcenv : cfg -> FStar_TypeChecker_Env.env) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> tcenv
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} -> tcenv
 let (__proj__Mkcfg__item__debug : cfg -> debug_switches) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> debug
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} -> debug
 let (__proj__Mkcfg__item__delta_level :
   cfg -> FStar_TypeChecker_Env.delta_level Prims.list) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> delta_level
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} ->
+        delta_level
 let (__proj__Mkcfg__item__primitive_steps : cfg -> prim_step_set) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> primitive_steps
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} ->
+        primitive_steps
 let (__proj__Mkcfg__item__strong : cfg -> Prims.bool) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> strong
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} -> strong
 let (__proj__Mkcfg__item__memoize_lazy : cfg -> Prims.bool) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> memoize_lazy
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} ->
+        memoize_lazy
 let (__proj__Mkcfg__item__normalize_pure_lets : cfg -> Prims.bool) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> normalize_pure_lets
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} ->
+        normalize_pure_lets
 let (__proj__Mkcfg__item__reifying : cfg -> Prims.bool) =
   fun projectee ->
     match projectee with
     | { steps; tcenv; debug; delta_level; primitive_steps; strong;
-        memoize_lazy; normalize_pure_lets; reifying;_} -> reifying
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} -> reifying
+let (__proj__Mkcfg__item__memo_ctr : cfg -> Prims.int) =
+  fun projectee ->
+    match projectee with
+    | { steps; tcenv; debug; delta_level; primitive_steps; strong;
+        memoize_lazy; normalize_pure_lets; reifying; memo_ctr;_} -> memo_ctr
 let (cfg_to_string : cfg -> Prims.string) =
   fun cfg1 ->
     let uu___ =
@@ -3097,7 +3107,8 @@ let (config' :
           strong = false;
           memoize_lazy = true;
           normalize_pure_lets = uu___1;
-          reifying = false
+          reifying = false;
+          memo_ctr = Prims.int_zero
         }
 let (config :
   FStar_TypeChecker_Env.step Prims.list -> FStar_TypeChecker_Env.env -> cfg)
