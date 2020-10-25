@@ -35,6 +35,27 @@ let __do_rewrite
     (tm : term)
   : tac<term>
 =
+  (*
+   * We skip certain terms. In particular if the term is a constant which
+   * must have an argument (reify, reflect, range_of, set_range_of),
+   * since typechecking will then fail, and the tactic will also not
+   * be able to do anything useful. Morally, `reify` is not a term,
+   * so it's fine to skip it.
+   *
+   * This is not perfect since if we have `(reify <: ty) x` this will
+   * still fail. But I don't think those terms ever pop up.
+   *)
+  let should_skip =
+    match (SS.compress tm).n with
+    | S.Tm_constant Const.Const_reify
+    | S.Tm_constant (Const.Const_reflect _)
+    | S.Tm_constant Const.Const_range_of
+    | S.Tm_constant Const.Const_set_range_of ->
+      true
+    | _ -> false
+  in
+  if should_skip then ret tm else begin
+
     (* It's important to keep the original term if we want to do
      * nothing, (hence the underscore below) since after the call to
      * the typechecker, t can be elaborated and have more structure. In
@@ -66,6 +87,7 @@ let __do_rewrite
                    (Print.term_to_string tm)
                    (Print.term_to_string ut)) (fun () ->
     ret ut)))))
+  end
 
 (* If __do_rewrite fails with "SKIP" we do nothing *)
 let do_rewrite
@@ -122,11 +144,11 @@ let rec map_ctac (c : ctac<'a>)
         bind (par_ctac c (map_ctac c) (x, xs)) (fun ((x, xs), flag) ->
         ret (x::xs, flag))
 
-let bind_ctac
-    (t : ctac<'a>)
-    (f : 'a -> ctac<'b>)
-  : ctac<'b>
-  = fun b -> failwith ""
+(* let bind_ctac *)
+(*     (t : ctac<'a>) *)
+(*     (f : 'a -> ctac<'b>) *)
+(*   : ctac<'b> *)
+(*   = fun b -> failwith "" *)
 
 let ctac_id (* : ctac<'a> *) =
   fun (x:'a) -> ret (x, Continue)
